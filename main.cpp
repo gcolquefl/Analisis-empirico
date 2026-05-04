@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <iomanip>
 using namespace std;
 
 typedef vector<vector<int>> Matriz;
@@ -39,23 +40,43 @@ void print(const Matriz& a) {
   int n = a.size();
   for(int i = 0; i < n; i++) {
     for(int j = 0; j < n; j++) {
-      cout << "Matriz[" << i << "][" << j <<"] = " << a[i][j] << endl;
+      cout << setw(4) << a[i][j] << " ";
     }
+    cout << endl;
   }
+}
+
+static long long elapsedNanoseconds(struct timespec start, struct timespec end) {
+  long long seconds = (long long)(end.tv_sec - start.tv_sec);
+  long long nanoseconds = (long long)(end.tv_nsec - start.tv_nsec);
+  return seconds * 1000000000LL + nanoseconds;
 }
 
 int main(){
   srand(time(0));
-  Matriz A = generateMatriz(2);
-  Matriz B = generateMatriz(2);
+  
+  struct timespec start, end;
+  int size;
+
+  cout << "Tamano de las matrices: ";
+  cin >> size;
+
+  Matriz A = generateMatriz(size);
+  Matriz B = generateMatriz(size);
+
   cout << "Matriz A:" << endl;
   print(A);
   cout << "Matriz B:" << endl;
   print(B);
 
-  cout << "Matriz C:" << endl;
+  clock_gettime(CLOCK_MONOTONIC, &start);
   Matriz C = multiplyStandar(A, B);
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  
+  cout << "Matriz C:" << endl;  
   print(C);
-
+  
+  double resultado = (double)elapsedNanoseconds(start, end) / 1000.0;
+  cout << "Tiempo de ejecucion: " << resultado << " us" << endl;
   return 0;
 }
