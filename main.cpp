@@ -56,27 +56,30 @@ int main(){
   srand(time(0));
   
   struct timespec start, end;
-  int size;
-
-  cout << "Tamano de las matrices: ";
-  cin >> size;
-
-  Matriz A = generateMatriz(size);
-  Matriz B = generateMatriz(size);
-
-  cout << "Matriz A:" << endl;
-  print(A);
-  cout << "Matriz B:" << endl;
-  print(B);
-
-  clock_gettime(CLOCK_MONOTONIC, &start);
-  Matriz C = multiplyStandar(A, B);
-  clock_gettime(CLOCK_MONOTONIC, &end);
   
-  cout << "Matriz C:" << endl;  
-  print(C);
+  for(int size = 4; size <= 64; size +=4) {
+    Matriz A = generateMatriz(size);
+    Matriz B = generateMatriz(size);
+
+    /*cout << "Matriz A:" << endl;
+    print(A);
+    cout << "Matriz B:" << endl;
+    print(B);
+    */
+
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    Matriz C = multiplyStandar(A, B);
+    clock_gettime(CLOCK_MONOTONIC, &end);
   
-  double resultado = (double)elapsedNanoseconds(start, end) / 1000.0;
-  cout << "Tiempo de ejecucion: " << resultado << " us" << endl;
+    /*cout << "Matriz C:" << endl;  
+    print(C);
+    */
+
+    double tiempo = (double)elapsedNanoseconds(start, end) / 1000.0;
+    
+    //Salida para gnuplot
+    cout << size << " " << tiempo << endl;
+    /*cout << "Tiempo de ejecucion: " << resultado << " us" << endl;*/
+  }
   return 0;
 }
