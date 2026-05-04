@@ -1,0 +1,7 @@
+# ejecutables
+a.out
+main
+*.exe
+
+# objetos de compilación
+*.o
