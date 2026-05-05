@@ -25,12 +25,17 @@ run: $(TARGET)
 # Graficar con gnuplot
 plot: run
 	gnuplot -persist -e "\
+	set terminal pngcairo size 800, 600; \
+	set output 'grafico.png'; \
 	set title 'Multiplicacion de matrices (O(n^3))'; \
 	set xlabel 'n'; \
 	set ylabel 'Tiempo (microsegundos)'; \
 	set grid; \
-	plot '$(DATA)' using 1:2 with linespoints title 'Standard'"
+	plot '$(DATA)' using 1:2 with linespoints title 'Standard'; \
+	set terminal wxt; \
+	set output; \
+	replot"
 
 # Limpiar archivos generados
 clean:
-	rm -f $(TARGET) $(DATA)
+	rm -f $(TARGET) 

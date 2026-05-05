@@ -86,7 +86,7 @@ int main(){
   
   struct timespec start, end;
   
-  for(int size = 10; size <= 500; size += 10) {
+  for(int size = 2; size <= 512; size *= 2) {
     Matriz A = generateMatriz(size);
     Matriz B = generateMatriz(size);
 
