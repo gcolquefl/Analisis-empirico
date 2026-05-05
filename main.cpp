@@ -20,10 +20,8 @@ Matriz generateMatriz(int n) {
 Matriz multiplyStandar(const Matriz& a, const Matriz& b) {
   if(a.size() == 0 || b.size() == 0 || a.size() != b.size() ||
       a[0].size() != b[0].size() || a.size() != a[0].size()) {
-    cout << "Dimensiones invalidas" << endl;
     return Matriz();
   }
-
   int n = a.size();
   Matriz c(n, vector<int>(n, 0));
   for(int i = 0; i < n; i++) {
@@ -34,6 +32,37 @@ Matriz multiplyStandar(const Matriz& a, const Matriz& b) {
     }
   }
   return c;
+}
+
+// Funciones Auxiliares para Streasen
+Matriz sumar(const Matriz& a, const Matriz& b) {
+  if(a.size() != b.size() || a.size() != a[0].size()) return Matriz();
+  int n = a.size();
+  Matriz c(n, vector<int>(n,0));
+  for(int i = 0; i < n; i++) {
+    for(int j = 0; j < n; j++) {
+      c[i][j] = a[i][j] + b[i][j];
+    }
+  }
+  return c;
+}
+
+Matriz restar(const Matriz& a, const Matriz& b) {
+  if(a.size() != b.size() || a.size() != a[0].size()) return Matriz();
+  int n = a.size();
+  Matriz c(n, vector<int>(n,0));
+  for(int i = 0; i < n; i++) {
+    for(int j = 0; j < n; j++) {
+      c[i][j] = a[i][j] - b[i][j];
+    }
+  }
+  return c;
+}
+
+Matriz strassen(const Matriz& a, const Matriz& b) {
+  if(a.size() != b.size() || a.size() != a[0].size()) return Matriz();
+  int n = a.size();
+  
 }
 
 void print(const Matriz& a) {
@@ -57,7 +86,7 @@ int main(){
   
   struct timespec start, end;
   
-  for(int size = 4; size <= 64; size +=4) {
+  for(int size = 10; size <= 500; size += 10) {
     Matriz A = generateMatriz(size);
     Matriz B = generateMatriz(size);
 
