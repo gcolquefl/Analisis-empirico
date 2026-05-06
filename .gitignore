@@ -2,6 +2,8 @@
 a.out
 main
 *.exe
+resultado 
+experimento
 
 # objetos de compilación
 *.o
