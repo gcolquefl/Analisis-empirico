@@ -27,11 +27,13 @@ plot: run
 	gnuplot -persist -e "\
 	set terminal pngcairo size 800, 600; \
 	set output 'grafico.png'; \
-	set title 'Multiplicacion de matrices (O(n^3))'; \
-	set xlabel 'n'; \
+	set title 'Strassen vs Estandar'; \
+	set xlabel 'n (Tamaño de la Matriz)'; \
 	set ylabel 'Tiempo (microsegundos)'; \
 	set grid; \
-	plot '$(DATA)' using 1:2 with linespoints title 'Standard'; \
+	set key top left; \
+	plot '$(DATA)' using 1:2 with linespoints title 'Estandard', \
+			 '$(DATA)' using 1:3 with linespoints title 'Strassen'; \
 	set terminal wxt; \
 	set output; \
 	replot"

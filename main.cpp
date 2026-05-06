@@ -7,6 +7,7 @@ using namespace std;
 
 typedef vector<vector<int>> Matriz;
 
+// Genera matriz con números aleatorios
 Matriz generateMatriz(int n) {
   Matriz newMatriz(n, vector<int>(n, 0));
   for(int i = 0; i < n; i++) {
@@ -17,6 +18,7 @@ Matriz generateMatriz(int n) {
   return newMatriz;
 }
 
+// Multiplicación Estándar
 Matriz multiplyStandar(const Matriz& a, const Matriz& b) {
   if(a.size() == 0 || b.size() == 0 || a.size() != b.size() ||
       a[0].size() != b[0].size() || a.size() != a[0].size()) {
@@ -34,7 +36,7 @@ Matriz multiplyStandar(const Matriz& a, const Matriz& b) {
   return c;
 }
 
-// Funciones Auxiliares para Streasen
+// Funciones Auxiliares para Streasen(Suma y Resta)
 Matriz sumar(const Matriz& a, const Matriz& b) {
   if(a.size() != b.size() || a.size() != a[0].size()) return Matriz();
   int n = a.size();
@@ -59,6 +61,7 @@ Matriz restar(const Matriz& a, const Matriz& b) {
   return c;
 }
 
+// Función Strassen
 Matriz strassen(const Matriz& a, const Matriz& b) {
   if(a.size() != b.size() || a.size() != a[0].size()) return Matriz();
   int n = a.size();
@@ -105,6 +108,7 @@ Matriz strassen(const Matriz& a, const Matriz& b) {
   return c;
 }
 
+// Mostrar Matriz
 void print(const Matriz& a) {
   int n = a.size();
   for(int i = 0; i < n; i++) {
@@ -115,42 +119,49 @@ void print(const Matriz& a) {
   }
 }
 
+// Calcula la diferencia de tiempo total
 static long long elapsedNanoseconds(struct timespec start, struct timespec end) {
   long long seconds = (long long)(end.tv_sec - start.tv_sec);
   long long nanoseconds = (long long)(end.tv_nsec - start.tv_nsec);
   return seconds * 1000000000LL + nanoseconds;
 }
 
+// Tiempo de ejecución de Algoritmo Estándar
+static double measureStandar(Matriz A, Matriz B) {
+  struct timespec start;
+  struct timespec end;
+
+  clock_gettime(CLOCK_MONOTONIC, &start);
+  multiplyStandar(A, B);
+  clock_gettime(CLOCK_MONOTONIC, &end);
+
+  return (double)elapsedNanoseconds(start, end) / 1000.0;
+}
+
+// Tiempo de ejecución de Algoritmo de Strassen
+static double measureStrassen(Matriz A, Matriz B) {
+  struct timespec start;
+  struct timespec end;
+
+  clock_gettime(CLOCK_MONOTONIC, &start);
+  strassen(A, B);
+  clock_gettime(CLOCK_MONOTONIC, &end);
+
+  return (double)elapsedNanoseconds(start, end) / 1000.0;
+}
+
 int main(){
   srand(time(0));
   
-  struct timespec start, end;
-  int size = 4;
-  /*
-  for(int size = 2; size <= 512; size *= 2) {*/
+  cout << "# n tiempo_standar tiempo_strassen" << endl;
+  for(int size = 2; size <= 512; size *= 2) {
     Matriz A = generateMatriz(size);
     Matriz B = generateMatriz(size);
-
-    cout << "Matriz A:" << endl;
-    print(A);
-    cout << "Matriz B:" << endl;
-    print(B);
-
-    /*clock_gettime(CLOCK_MONOTONIC, &start);
-    Matriz C = multiplyStandar(A, B);
-    clock_gettime(CLOCK_MONOTONIC, &end);
-  
-    cout << "Matriz C:" << endl;  
-    print(C);
-  
-    double tiempo = (double)elapsedNanoseconds(start, end) / 1000.0;
     
-    //Salida para gnuplot
-    cout << size << " " << tiempo << endl;
-    cout << "Tiempo de ejecucion: " << resultado << " us" << endl;
-  }*/
-  cout << "Matriz D(Resultado Stressen" << endl;
-  Matriz D = strassen(A, B);
-  print(D);
+    double tStandar = measureStandar(A, B);
+    double tStrassen = measureStrassen(A, B);
+
+    cout << size << " " << tStandar << " " << tStrassen << endl;
+  }
   return 0;
 }
