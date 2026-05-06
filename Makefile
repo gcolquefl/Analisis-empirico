@@ -35,7 +35,7 @@ plot: run
 	set terminal wxt; \
 	set output; \
 	replot"
-
+	
 # Limpiar archivos generados
 clean:
 	rm -f $(TARGET) 
