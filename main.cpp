@@ -6,6 +6,7 @@
 using namespace std;
 
 typedef vector<vector<int>> Matriz;
+const int THRESHOLD = 32;
 
 // Genera matriz con números aleatorios
 Matriz generateMatriz(int n) {
@@ -65,7 +66,7 @@ Matriz restar(const Matriz& a, const Matriz& b) {
 Matriz strassen(const Matriz& a, const Matriz& b) {
   if(a.size() != b.size() || a.size() != a[0].size()) return Matriz();
   int n = a.size();
-  if(n <= 128) return multiplyStandar(a, b);
+  if(n <= THRESHOLD) return multiplyStandar(a, b);
 
   int k = n / 2;
 
