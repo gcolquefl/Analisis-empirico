@@ -65,7 +65,7 @@ Matriz restar(const Matriz& a, const Matriz& b) {
 Matriz strassen(const Matriz& a, const Matriz& b) {
   if(a.size() != b.size() || a.size() != a[0].size()) return Matriz();
   int n = a.size();
-  if(n <= 64) return multiplyStandar(a, b);
+  if(n <= 2) return multiplyStandar(a, b);
 
   int k = n / 2;
 
