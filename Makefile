@@ -33,7 +33,7 @@ plot: run
 	set grid; \
 	set key top left; \
 	plot '$(DATA)' using 1:2 with linespoints title 'Estandard', \
-			 '$(DATA)' using 1:3 with linespoints title 'Strassen'; \
+	'$(DATA)' using 1:3 with linespoints title 'Strassen'; \
 	set terminal wxt; \
 	set output; \
 	replot"

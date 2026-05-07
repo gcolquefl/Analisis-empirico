@@ -6,7 +6,7 @@
 using namespace std;
 
 typedef vector<vector<int>> Matriz;
-const int THRESHOLD = 128;
+const int THRESHOLD = 32;
 
 // Genera matriz con números aleatorios
 Matriz generateMatriz(int n) {
@@ -128,7 +128,7 @@ static long long elapsedNanoseconds(struct timespec start, struct timespec end) 
 }
 
 // Tiempo de ejecución de Algoritmo Estándar
-static double measureStandar(Matriz A, Matriz B) {
+static double measureStandar(const Matriz& A, const Matriz& B) {
   struct timespec start;
   struct timespec end;
 
@@ -140,7 +140,7 @@ static double measureStandar(Matriz A, Matriz B) {
 }
 
 // Tiempo de ejecución de Algoritmo de Strassen
-static double measureStrassen(Matriz A, Matriz B) {
+static double measureStrassen(const Matriz& A, const Matriz& B) {
   struct timespec start;
   struct timespec end;
 
