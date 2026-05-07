@@ -153,15 +153,29 @@ static double measureStrassen(Matriz A, Matriz B) {
 int main(){
   srand(time(0));
   
+  const int REPETICIONES = 10;
+
   cout << "# n tiempo_standar tiempo_strassen" << endl;
-  for(int size = 2; size <= 512; size *= 2) {
+  
+  vector<int> sizes = {2, 4, 8, 16, 32, 64, 128, 256, 512};
+
+  for(int size : sizes) {
     Matriz A = generateMatriz(size);
     Matriz B = generateMatriz(size);
     
-    double tStandar = measureStandar(A, B);
-    double tStrassen = measureStrassen(A, B);
+    double totalStandar = 0;
+    double totalStrassen = 0;
 
+    for(int i = 0; i < REPETICIONES; i++) {
+      totalStandar += measureStandar(A, B);
+      totalStrassen += measureStrassen(A, B);
+    }
+
+    double tStandar = totalStandar / REPETICIONES;
+    double tStrassen = totalStrassen / REPETICIONES;
+    
     cout << size << " " << tStandar << " " << tStrassen << endl;
   }
+
   return 0;
 }
