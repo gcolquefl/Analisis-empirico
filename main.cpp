@@ -27,9 +27,10 @@ Matriz multiplyStandar(const Matriz& a, const Matriz& b) {
   }
   int n = a.size();
   Matriz c(n, vector<int>(n, 0));
+  // Orden i-k-j mejor localidad de caché (b recorre filas, no columnas)
   for(int i = 0; i < n; i++) {
-    for(int j = 0; j < n; j++) {
-      for(int k = 0; k < n; k++) {
+    for(int k = 0; k < n; k++) {
+      for(int j = 0; j < n; j++) {
         c[i][j] += a[i][k] * b[k][j];
       }
     }
@@ -153,12 +154,10 @@ static double measureStrassen(const Matriz& A, const Matriz& B) {
 
 int main(){
   srand(time(0));
-  
   const int REPETICIONES = 10;
-
   cout << "# n tiempo_standar tiempo_strassen" << endl;
   
-  vector<int> sizes = {2, 4, 8, 16, 32, 64, 128, 256, 512};
+  vector<int> sizes = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
 
   for(int size : sizes) {
     Matriz A = generateMatriz(size);
