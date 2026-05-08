@@ -157,7 +157,7 @@ int main(){
   const int REPETICIONES = 10;
   cout << "# n tiempo_standar tiempo_strassen" << endl;
   
-  vector<int> sizes = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
+  vector<int> sizes = {2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 96, 128, 192, 256, 384, 512, 1024};
 
   for(int size : sizes) {
     Matriz A = generateMatriz(size);
