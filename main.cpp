@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
+#include <fstream>
 using namespace std;
 
 typedef vector<vector<int>> Matriz;
@@ -208,8 +209,13 @@ int main(){
   // Hallar N0
   cerr << "\n# === Calculo de N0 (THRESHOLD=" << THRESHOLD << ") ===" << endl;
   double n0 = calcularN0(ns, tStandars, tStrassens);
-  if(n0 > 0) cerr << "# N0 empirico = " << n0 << endl;
-  else cerr << "# No se encontro cruce: aumentar rango de n" << endl;
+  if(n0 > 0) {
+    cerr << "# N0 empirico = " << n0 << endl;
+    ofstream f("n0.dat");
+    f << n0 << endl;
+  } else {
+    cerr << "# No se encontro cruce: aumentar rango de n" << endl;
+  }
  
   return 0;
 }
