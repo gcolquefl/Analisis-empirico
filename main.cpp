@@ -6,7 +6,7 @@
 using namespace std;
 
 typedef vector<vector<int>> Matriz;
-const int THRESHOLD = 32;
+const int THRESHOLD = 64;
 
 // Genera matriz con números aleatorios
 Matriz generateMatriz(int n) {
