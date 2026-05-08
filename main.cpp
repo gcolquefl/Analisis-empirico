@@ -152,12 +152,36 @@ static double measureStrassen(const Matriz& A, const Matriz& B) {
   return (double)elapsedNanoseconds(start, end) / 1000.0;
 }
 
+// Calcula N0 por interpolacion lineal entre los puntos medidos.
+// Busca el ultimo cruce sostenido donde Strassen pasa a ser mas rapido.
+double calcularN0(const vector<int>& ns, const vector<double>& tStandars, const vector<double>& tStrassens) {
+  double n0 = -1;
+  for(int i = 1; i < (int)ns.size(); i++) {
+    double diff_prev = tStrassens[i-1] - tStandars[i-1]; // + = strassen mas lento
+    double diff_curr = tStrassens[i]   - tStandars[i];   // - = strassen mas rapido
+ 
+    if(diff_prev > 0 && diff_curr <= 0) {
+      // Interpolacion lineal: N0 = n1 + (n2-n1) * diff_prev / (diff_prev - diff_curr)
+      double candidato = ns[i-1] + (double)(ns[i] - ns[i-1])
+                         * diff_prev / (diff_prev - diff_curr);
+      cerr << "# Cruce entre n=" << ns[i-1] << " y n=" << ns[i]
+           << " -> N0 candidato = " << candidato << endl;
+      n0 = candidato; // se queda con el ultimo cruce sostenido
+    }
+  }
+  return n0;
+}
+
 int main(){
   srand(time(0));
   const int REPETICIONES = 10;
+
   cout << "# n tiempo_standar tiempo_strassen" << endl;
   
   vector<int> sizes = {2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 96, 128, 192, 256, 384, 512, 1024};
+
+  vector<int>    ns;
+  vector<double> tStandars, tStrassens;  
 
   for(int size : sizes) {
     Matriz A = generateMatriz(size);
@@ -171,11 +195,21 @@ int main(){
       totalStrassen += measureStrassen(A, B);
     }
 
-    double tStandar = totalStandar / REPETICIONES;
-    double tStrassen = totalStrassen / REPETICIONES;
+    double tS = totalStandar / REPETICIONES;
+    double tSt = totalStrassen / REPETICIONES;
     
-    cout << size << " " << tStandar << " " << tStrassen << endl;
+    cout << size << " " << tS << " " << tSt << endl;
+
+    ns.push_back(size);
+    tStandars.push_back(tS);
+    tStrassens.push_back(tSt);    
   }
 
+  // Hallar N0
+  cerr << "\n# === Calculo de N0 (THRESHOLD=" << THRESHOLD << ") ===" << endl;
+  double n0 = calcularN0(ns, tStandars, tStrassens);
+  if(n0 > 0) cerr << "# N0 empirico = " << n0 << endl;
+  else cerr << "# No se encontro cruce: aumentar rango de n" << endl;
+ 
   return 0;
 }
